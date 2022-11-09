@@ -42,7 +42,7 @@ int main() {
     bool upDated = true;
     bool isToday = true;
     bool isAhead = true;
-    cout << "\nВывод результатов:\n\n";
+    cout << "\nВывод результатов:\n";
     auto iter = friendsList.begin();
 
     for (; iter != friendsList.end(); iter++) {
@@ -71,9 +71,8 @@ int main() {
                 break;
         }
     }
-    cout << "\n\n";
+    cout << "\n\nВывод списка результатов завершен\n";
 
-    system("pause");
     return 0;
 }
 
@@ -85,18 +84,16 @@ tm getDateInput () {
     cout << "\tВведите дату в формате YYYY/mm/dd: ";
     while (true) {
         cin >> get_time(oneDate, "%Y/%m/%d");
-        if (cin && oneDate->tm_year >= 0) break;
+        if (cin && oneDate->tm_year > 0)
+            break;
         cerr << "\tНеверный формат, попробуйте еще раз: ";
         cin.clear();
         fflush(stdin);
     }
-
-    if (oneDate->tm_year >= 1970) {
-        // создаем корректные даты если это не раньше < 1970 года
+    if (oneDate->tm_year >= 70) {
         t = mktime(oneDate);
         oneDate = localtime(&t);
     }
-    //cout << "\t" << asctime(oneDate) << endl;
     return *oneDate;
 }
 

@@ -3,12 +3,11 @@
 #include <vector>
 #include <iomanip>
 #include <map>
-#include "windows.h"
 using namespace std;
 
 struct Person {
     string name;
-    struct tm birthday;
+    struct tm birthday{};
 };
 
 tm getDateInput ();
@@ -18,8 +17,6 @@ int solveDatePuzzle (tm &oneDate);
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
 
     Person person{};
     vector<Person> friends;
@@ -29,7 +26,7 @@ int main() {
         cin.clear();
         fflush(stdin);
 
-        cout << "Введите имя: ";
+        cout << "Р’РІРµРґРёС‚Рµ РёРјСЏ: ";
         getline(cin, person.name);
         if (!person.name.empty() && person.name != "end")
         {
@@ -45,7 +42,7 @@ int main() {
     bool upDated = true;
     bool isToday = true;
     bool isAhead = true;
-    cout << "\nВывод результатов:\n\n";
+    cout << "\nР’С‹РІРѕРґ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ:\n\n";
     auto iter = friendsList.begin();
 
     for (; iter != friendsList.end(); iter++) {
@@ -53,21 +50,21 @@ int main() {
         switch (solveDatePuzzle(friends.at(i).birthday)) {
             case -1:
                 if (upDated) {
-                    cout << "\nСписок дней рождения, которые уже прошли:\n";
+                    cout << "\nРЎРїРёСЃРѕРє РґРЅРµР№ СЂРѕР¶РґРµРЅРёСЏ, РєРѕС‚РѕСЂС‹Рµ СѓР¶Рµ РїСЂРѕС€Р»Рё:\n";
                     upDated = false;
                 }
                 cout << "\t" << getPersonString(friends.at(i)) << endl;
                 break;
             case 0:
                 if (isToday) {
-                    cout << "\nСегодня мы поздравляем с днем рождения:\n";
+                    cout << "\nРЎРµРіРѕРґРЅСЏ РјС‹ РїРѕР·РґСЂР°РІР»СЏРµРј СЃ РґРЅРµРј СЂРѕР¶РґРµРЅРёСЏ:\n";
                     isToday = false;
                 }
                 cout << "\t" << getPersonString(friends.at(i)) << endl;
                 break;
             case 1:
                 if (isAhead) {
-                    cout << "\nСписок тех, кого нужно не забыть поздравить:\n";
+                    cout << "\nРЎРїРёСЃРѕРє С‚РµС…, РєРѕРіРѕ РЅСѓР¶РЅРѕ РЅРµ Р·Р°Р±С‹С‚СЊ РїРѕР·РґСЂР°РІРёС‚СЊ:\n";
                     isAhead = false;
                 }
                 cout << "\t" << getPersonString(friends.at(i)) << endl;
@@ -85,17 +82,17 @@ tm getDateInput () {
     time_t t = time(nullptr);
     struct tm* oneDate = localtime(&t);
 
-    cout << "\tВведите дату в формате YYYY/mm/dd: ";
+    cout << "\tР’РІРµРґРёС‚Рµ РґР°С‚Сѓ РІ С„РѕСЂРјР°С‚Рµ YYYY/mm/dd: ";
     while (true) {
         cin >> get_time(oneDate, "%Y/%m/%d");
         if (cin && oneDate->tm_year >= 0) break;
-        cerr << "\tНеверный формат, попробуйте еще раз: ";
+        cerr << "\tРќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚, РїРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰Рµ СЂР°Р·: ";
         cin.clear();
         fflush(stdin);
     }
 
     if (oneDate->tm_year >= 1970) {
-        // создаем корректные даты если это не раньше < 1970 года
+        // СЃРѕР·РґР°РµРј РєРѕСЂСЂРµРєС‚РЅС‹Рµ РґР°С‚С‹ РµСЃР»Рё СЌС‚Рѕ РЅРµ СЂР°РЅСЊС€Рµ < 1970 РіРѕРґР°
         t = mktime(oneDate);
         oneDate = localtime(&t);
     }
@@ -112,10 +109,10 @@ string getKeyString (struct Person &p) {
 }
 
 string getPersonString (struct Person &p) {
-    string months[] {"январь","февраль","март","апрель","май","июнь","июль","август",
-                     "сентябрь","октябрь","ноябрь","декабрь"};
+    string months[] {"СЏРЅРІР°СЂСЊ","С„РµРІСЂР°Р»СЊ","РјР°СЂС‚","Р°РїСЂРµР»СЊ","РјР°Р№","РёСЋРЅСЊ","РёСЋР»СЊ","Р°РІРіСѓСЃС‚",
+                     "СЃРµРЅС‚СЏР±СЂСЊ","РѕРєС‚СЏР±СЂСЊ","РЅРѕСЏР±СЂСЊ","РґРµРєР°Р±СЂСЊ"};
 
-    string s = "Имя: " + p.name + " день рождения: ";
+    string s = "РРјСЏ: " + p.name + " РґРµРЅСЊ СЂРѕР¶РґРµРЅРёСЏ: ";
     string day = to_string(p.birthday.tm_mday);
     if (day.length() == 1) day = "0" + day;
 
